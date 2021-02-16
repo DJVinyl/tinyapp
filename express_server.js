@@ -30,7 +30,7 @@ const generateRandomString = (length) => {
   return result;
 };
 
-const checkEmail = (newEmail) => {
+const checkEmailExists = (newEmail) => {
   for(id in users){
     if (users[id].email === newEmail){
       return true;
@@ -38,6 +38,17 @@ const checkEmail = (newEmail) => {
   }
   return false;
 };
+
+const loginAuth = (username, password) => {
+  for (id in users) {
+    if (users[id].email === username){
+      if(users[id].password === password){
+        return id;
+      }
+    }
+  }
+  return false;
+}
 
 
 app.set("view engine", "ejs"); //setting the view engine.
@@ -105,11 +116,11 @@ app.get("/urls.json", (req, res) => {
   res.json(urlDatabase);
 });
 
-app.post("/login", (req, res) => {
-  //res.cookie('username', req.body.username);
-  res.cookie('user_id', req.body.userID)
-  res.redirect('/urls');
-});
+// app.post("/login", (req, res) => {
+//   //res.cookie('username', req.body.username);
+//   res.cookie('user_id', req.body.userID)
+//   res.redirect('/urls');
+// });
 
 app.post("/logout", (req, res) => {
   res.clearCookie('user_id', req.body.userID);
@@ -137,7 +148,7 @@ app.post("/register", (req, res) => {
   if(!req.body.username || !req.body.password)
   {
     res.status(400).send({ error: "Username and Email must be values" });
-  } else if (checkEmail(req.body.username)){
+  } else if (checkEmailExists(req.body.username)){
     res.status(400).send({ error: "Username already exists" });
   } else {
   users[randID] = { id: randID.toString(), email: req.body.username, password: req.body.password};
@@ -148,7 +159,18 @@ app.post("/register", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  res.redirect('/urls');
+  console.log("in POST Login")
+  const loginEmail = req.body.email;
+  const loginPW = req.body.password;
+  const ID = loginAuth(loginEmail,loginPW)
+  if(ID)
+  {
+    res.cookie('user_id', ID);
+    res.redirect('/urls');
+  }
+  else {
+    res.status(400).send({ error: "Username and password combo don't exist" });
+  }
 });
 
 

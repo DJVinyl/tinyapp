@@ -11,6 +11,7 @@ const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
+const users = {};
 
 //located code: https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
 const generateRandomString = () => {
@@ -92,14 +93,17 @@ app.post("/logout", (req, res) => {
   res.redirect('/urls');
 });
 
-
 app.get("/register", (req, res) => {
   const templateVars = { 
     username: req.cookies["username"] };
   res.render("register", templateVars);
 });
 
-
+app.post("/register", (req, res) => {
+  users[req.body.username] = req.body.password;
+  res.cookie('username', req.body.username);
+  res.redirect('/urls');
+});
 
 
 app.listen(PORT, () => {

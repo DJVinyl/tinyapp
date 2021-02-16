@@ -10,24 +10,24 @@
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
       </div>
     </div>
-    <% if (username !==undefined) { %>
-      <div class="display-username">
+    <% if (userID !== undefined) { %>
+      <div class="display-Logout">
       <a id="username">
         <%= username %>
-        <div class="Logout">
-          <form method="POST" action='/logout'><button id="logoutButton">Log Out</button></form>
-          </form>
-        </div>
+          <div class="Logout">
+            <form method="POST" action='/logout'><button id="logoutButton">Log Out</button></form>
+          </div>
       </a>
       </div>
       <% }else { %>
-      <div class="Login">
-        <form class="login-link" action="/login" method="POST">
-          <label for="username">Username</label><br>
-          <input type="text" id="username" name="username">
-          <input type="submit" value="Submit">
-        </form>
-      </div>
-      <%}%>
-      </nav>
+        <div class="Login">
+          <form class="login-link" action="/login" method="GET">
+            <button id="Login">Login</button>
+          </form>
+          <form class="register-link" action="/register" method="GET">
+            <button id="Register">Register</button>
+          </form>
+        </div>
+        <%}%>
+          </nav>
       </header>

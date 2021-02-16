@@ -10,10 +10,10 @@
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
       </div>
     </div>
-    <% if (userID !== undefined) { %>
+    <% if (user !== undefined) { %>
       <div class="display-Logout">
       <a id="username">
-        <%= username %>
+        <%= users[userID].email %>
           <div class="Logout">
             <form method="POST" action='/logout'><button id="logoutButton">Log Out</button></form>
           </div>

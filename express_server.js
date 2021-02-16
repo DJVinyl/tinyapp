@@ -116,12 +116,6 @@ app.get("/urls.json", (req, res) => {
   res.json(urlDatabase);
 });
 
-// app.post("/login", (req, res) => {
-//   //res.cookie('username', req.body.username);
-//   res.cookie('user_id', req.body.userID)
-//   res.redirect('/urls');
-// });
-
 app.post("/logout", (req, res) => {
   res.clearCookie('user_id', req.body.userID);
   res.redirect('/urls');
@@ -153,7 +147,6 @@ app.post("/register", (req, res) => {
   } else {
   users[randID] = { id: randID.toString(), email: req.body.username, password: req.body.password};
   res.cookie('user_id', randID);
-  //res.cookie('username', req.body.username);
   res.redirect('/urls');
   }
 });
@@ -169,7 +162,7 @@ app.post("/login", (req, res) => {
     res.redirect('/urls');
   }
   else {
-    res.status(400).send({ error: "Username and password combo don't exist" });
+    res.status(403).send({ error: "Username and password combo don't exist" });
   }
 });
 

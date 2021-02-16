@@ -52,7 +52,23 @@ app.get("/urls/new", (req, res) => {
 app.get("/urls/:shortURL", (req, res) => {
   const templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL]};
   res.render("urls_show", templateVars);
+  
+  // console.log('logging:', req.params.body);
+  // urlDatabase[shortURL] = req.params.body;
 });
+
+app.post("/urls/:shortURL", (req, res) => {
+  //console.log('logging:', req.body);
+  console.log(req.body.editSubmit);
+  urlDatabase[req.params.shortURL] = req.body.editSubmit
+  res.redirect(`/urls`);
+});
+
+
+//Cant figure out how to get form info from client side to server side
+// app.post("/urls/:shortURL", (req, res) => {
+//   urlDatabase[req.params.shortURL] = req.body.submit;
+// });
 
 app.post("/urls/:shortURL/delete", (req, res) => {
   delete urlDatabase[req.params.shortURL];

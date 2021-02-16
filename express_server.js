@@ -41,7 +41,7 @@ app.get("/hello", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
-  console.log(req.cookies['user_id']);
+  //console.log(req.cookies['user_id']);
   const templateVars = {
     userID: req.cookies['user_id'],
     urls: urlDatabase,
@@ -124,7 +124,7 @@ app.get("/login", (req, res) => {
 
 app.post("/register", (req, res) => {
   const randID = generateRandomString(10);
-  users[randID] = { id: randID.toString(), username: req.body.username, password: req.body.password};
+  users[randID] = { id: randID.toString(), email: req.body.username, password: req.body.password};
   res.cookie('user_id', randID);
   //res.cookie('username', req.body.username);
   res.redirect('/urls');

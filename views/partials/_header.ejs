@@ -13,7 +13,7 @@
     <% if (user !== undefined) { %>
       <div class="display-Logout">
       <a id="username">
-        <%= users[userID].email %>
+        <%= user.email %>
           <div class="Logout">
             <form method="POST" action='/logout'><button id="logoutButton">Log Out</button></form>
           </div>

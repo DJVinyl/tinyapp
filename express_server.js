@@ -11,17 +11,45 @@ const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
+const users = {
+  '10000': {
+    id: "10000", 
+    email: "test", 
+    password: "123"
+  }
+};
 
 //located code: https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
-const generateRandomString = () => {
+const generateRandomString = (length) => {
   let result           = '';
   const characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   const charactersLength = characters.length;
-  for (let i = 0; i < 7; i++ ) {
+  for (let i = 0; i < length; i++ ) {
      result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
   return result;
 };
+
+const checkEmailExists = (newEmail) => {
+  for(id in users){
+    if (users[id].email === newEmail){
+      return true;
+    }
+  }
+  return false;
+};
+
+const loginAuth = (username, password) => {
+  for (id in users) {
+    if (users[id].email === username){
+      if(users[id].password === password){
+        return id;
+      }
+    }
+  }
+  return false;
+}
+
 
 app.set("view engine", "ejs"); //setting the view engine.
 
@@ -34,15 +62,19 @@ app.get("/hello", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
-  const templateVars = { 
-    username: req.cookies["username"],
-    urls: urlDatabase };
+  //console.log(req.cookies['user_id']);
+  const templateVars = {
+    userID: req.cookies['user_id'],
+    urls: urlDatabase,
+    user: users[req.cookies['user_id']]
+  }
   res.render("urls_index", templateVars);
 });
 
+
 app.post("/urls", (req, res) => {
   console.log(req.body);  // Log the POST request body to the console
-  const shortURL = generateRandomString() //EVENTUALLY ADD FUNCTIONALITY THAT WILL CHECK IF The shortURL already exists,
+  const shortURL = generateRandomString(7) //EVENTUALLY ADD FUNCTIONALITY THAT WILL CHECK IF The shortURL already exists,
   urlDatabase[shortURL] = req.body.longURL;
   console.log(shortURL, req.body.longURL)
   //res.send("Ok");         // Respond with 'Ok' (we will replace this)
@@ -51,12 +83,14 @@ app.post("/urls", (req, res) => {
 
 app.get("/urls/new", (req, res) => {
   const templateVars = { 
-    username: req.cookies["username"] };
+    userID: req.cookies['user_id'] };
+  // const templateVars = { 
+  //   username: req.cookies["username"] }
   res.render("urls_new", templateVars);
 });
 
 app.get("/urls/:shortURL", (req, res) => {
-  const templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL], username: req.cookies["username"] };
+  const templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL], userID: req.cookies["user_id"] };
   res.render("urls_show", templateVars);
 });
 
@@ -82,14 +116,39 @@ app.get("/urls.json", (req, res) => {
   res.json(urlDatabase);
 });
 
-app.post("/login", (req, res) => {
-  res.cookie('username', req.body.username);
+app.post("/logout", (req, res) => {
+  res.clearCookie('user_id', req.body.userID);
   res.redirect('/urls');
 });
 
-app.post("/logout", (req, res) => {
-  res.clearCookie('username', req.body.username);
+app.get("/register", (req, res) => {
+  const templateVars = { 
+    userID: req.cookies['user_id'],
+    user: users[req.cookies['user_id']]
+  };
+  res.render("register", templateVars);
+});
+
+app.get("/login", (req, res) => {
+  const templateVars = { 
+    userID: req.cookies['user_id'],
+    user: users[req.cookies['user_id']]
+   };
+  res.render("login", templateVars);
+});
+
+app.post("/register", (req, res) => {
+  const randID = generateRandomString(10);
+  if(!req.body.username || !req.body.password)
+  {
+    res.status(400).send({ error: "Username and Email must be values" });
+  } else if (checkEmailExists(req.body.username)){
+    res.status(400).send({ error: "Username already exists" });
+  } else {
+  users[randID] = { id: randID.toString(), email: req.body.username, password: req.body.password};
+  res.cookie('user_id', randID);
   res.redirect('/urls');
+  }
 });
 
 app.listen(PORT, () => {

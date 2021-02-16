@@ -10,12 +10,20 @@
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
       </div>
     </div>
-    <div class="Login">
-      <form class="login-link" action="/login" method="POST"> 
-        <label for="username">Username</label><br>
-        <input type="text" id="username" name="username">
-        <input type="submit" value="Submit">
-      </form>
-    </div>
-  </nav>
-</header>
+    <% if (username !==undefined) { %>
+      <div class="display-username">
+      <a id="username">
+        <%= username %>
+      </a>
+      </div>
+      <% }else { %>
+      <div class="Login">
+        <form class="login-link" action="/login" method="POST">
+          <label for="username">Username</label><br>
+          <input type="text" id="username" name="username">
+          <input type="submit" value="Submit">
+        </form>
+      </div>
+      <%}%>
+      </nav>
+      </header>

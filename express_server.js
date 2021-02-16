@@ -30,6 +30,16 @@ const generateRandomString = (length) => {
   return result;
 };
 
+const checkEmail = (newEmail) => {
+  for(id in users){
+    if (users[id].email === newEmail){
+      return true;
+    }
+  }
+  return false;
+};
+
+
 app.set("view engine", "ejs"); //setting the view engine.
 
 app.get("/", (req, res) => {
@@ -124,10 +134,17 @@ app.get("/login", (req, res) => {
 
 app.post("/register", (req, res) => {
   const randID = generateRandomString(10);
+  if(!req.body.username || !req.body.password)
+  {
+    res.status(400).send({ error: "Username and Email must be values" });
+  } else if (checkEmail(req.body.username)){
+    res.status(400).send({ error: "Username already exists" });
+  } else {
   users[randID] = { id: randID.toString(), email: req.body.username, password: req.body.password};
   res.cookie('user_id', randID);
   //res.cookie('username', req.body.username);
   res.redirect('/urls');
+  }
 });
 
 app.post("/login", (req, res) => {

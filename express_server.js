@@ -83,9 +83,9 @@ const urlsForUser = (id) => {
 
 app.set("view engine", "ejs"); //setting the view engine.
 
-// app.get("/", (req, res) => {
-//   res.send("Hello!");
-// });
+app.get("/", (req, res) => {
+  res.redirect('/urls');
+});
 
 // app.get("/hello", (req, res) => {
 //   res.send("<html><body>Hello <b>World</b></body></html>\n");

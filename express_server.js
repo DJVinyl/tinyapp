@@ -71,6 +71,17 @@ const loginAuth = (username, password) => {
   return false;
 }
 
+const userAuthorized = (user, shortURL) => {
+  const accessibleURLS = urlsForUser(user);
+  for (let urlID in accessibleURLS)
+  {
+    if (shortURL === accessibleURLS[urlID]){
+      return true;
+    }
+  }
+  return false;
+};
+
 const urlsForUser = (id) => {
   let result = {};
   for (let urlID in urlDatabase){
@@ -80,6 +91,16 @@ const urlsForUser = (id) => {
   }
   return result;
 }
+
+const checkURL = (id) => {
+  for (let urlID in urlDatabase){
+    if (urlID === id) {
+      return true;
+    }
+  }
+  return false;
+}
+
 
 app.set("view engine", "ejs"); //setting the view engine.
 
@@ -131,12 +152,19 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.get("/urls/:shortURL", (req, res) => {
-  const templateVars = { shortURL: req.params.shortURL, 
-    longURL: urlDatabase[req.params.shortURL].longURL, 
-    userID: req.session.user_id,
-    user: users[req.session.user_id]
-  };
-  res.render("urls_show", templateVars);
+  const test = checkURL(req.params.shortURL);
+  const authorized = userAuthorized(req.session.user_id, req.params.shortURL)
+  if(test && authorized) {
+    const templateVars = {
+      shortURL: req.params.shortURL,
+      longURL: urlDatabase[req.params.shortURL].longURL,
+      userID: req.session.user_id,
+      user: users[req.session.user_id],
+    };
+    res.render("urls_show", templateVars);
+  } else {
+    res.status(404).send({ error: "Resource not located or Unauthorized" });
+  }
 });
 
 app.get("/u/:shortURL", (req, res) => {
@@ -211,6 +239,10 @@ app.post("/login", (req, res) => {
   else {
     res.status(403).send({ error: "Username and password combo don't exist" });
   }
+});
+
+app.get('*', function(req, res){
+  res.send('what???', 404);
 });
 
 app.listen(PORT, () => {

@@ -64,20 +64,20 @@ ____________________________
         - (Stretch) the number of times the short URL was visited
         - (Stretch) the number number of unique visits for the short URL
       - (Minor) a link to "Create a New Short Link" which makes a GET request to /urls/new
-    - if user is not logged in:
+    - [x] if user is not logged in:
       returns HTML with a relevant error message
 - [x] GET /urls/new
-  - if user is logged in:
+  - [x] if user is logged in:
     - returns HTML with:
     - the site header (see Display Requirements above)
     - a form which contains:
       - a text input field for the original (long) URL
       - a submit button which makes a POST request to /urls
-  - if user is not logged in:
+  - [x] if user is not logged in:
       - redirects to the /login page
 
-- [ ] GET /urls/:id
-  - if user is logged in and owns the URL for the given ID:
+- [] GET /urls/:id
+  - [x] if user is logged in and owns the URL for the given ID:
     - returns HTML with:
     - the site header (see Display Requirements above)
     - the short URL (for the given ID)
@@ -87,11 +87,11 @@ ____________________________
     - (Stretch) the date the short URL was created
     - (Stretch) the number of times the short URL was visited
     - (Stretch) the number of unique visits for the short URL
-  - if a URL for the given ID does not exist:
+  - [ ] if a URL for the given ID does not exist:
     - (Minor) returns HTML with a relevant error message
-  - if user is not logged in:
+  - [ ] if user is not logged in:
     - returns HTML with a relevant error message
-  - if user is logged it but does not own the URL with the given ID:
+  - [ ] if user is logged in but does not own the URL with the given ID:
     - returns HTML with a relevant error message
 
 - [ ] GET /u/:id

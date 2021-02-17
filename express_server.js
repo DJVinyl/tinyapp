@@ -51,9 +51,9 @@ const loginAuth = (username, password) => {
 }
 
 const urlsForUser = (id) => {
-  const result = {};
+  let result = {};
   for (let urlID in urlDatabase){
-    if (urlID.userID === id) {
+    if (urlDatabase[urlID].userID === id) {
       result[urlID] = urlDatabase[urlID];
     }
   }
@@ -62,19 +62,18 @@ const urlsForUser = (id) => {
 
 app.set("view engine", "ejs"); //setting the view engine.
 
-app.get("/", (req, res) => {
-  res.send("Hello!");
-});
+// app.get("/", (req, res) => {
+//   res.send("Hello!");
+// });
 
-app.get("/hello", (req, res) => {
-  res.send("<html><body>Hello <b>World</b></body></html>\n");
-});
+// app.get("/hello", (req, res) => {
+//   res.send("<html><body>Hello <b>World</b></body></html>\n");
+// });
 
 app.get("/urls", (req, res) => {
-  //console.log(req.cookies['user_id']);
   const templateVars = {
     userID: req.cookies['user_id'],
-    urls: urlDatabase,
+    urls: urlsForUser(req.cookies['user_id']),
     user: users[req.cookies['user_id']]
   }
   res.render("urls_index", templateVars);
@@ -84,9 +83,8 @@ app.get("/urls", (req, res) => {
 app.post("/urls", (req, res) => {
   console.log(req.body);  // Log the POST request body to the console
   const shortURL = generateRandomString(7) //EVENTUALLY ADD FUNCTIONALITY THAT WILL CHECK IF The shortURL already exists,
-  urlDatabase[shortURL] = req.body.longURL;
-  console.log(shortURL, req.body.longURL)
-  //res.send("Ok");         // Respond with 'Ok' (we will replace this)
+  urlDatabase[shortURL] = {longURL: req.body.longURL, userID: req.cookies['user_id']}
+  console.log(urlDatabase);
   res.redirect(`/urls/${shortURL}`)
 });
 

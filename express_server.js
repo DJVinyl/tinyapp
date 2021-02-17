@@ -100,7 +100,12 @@ app.get("/urls", (req, res) => {
   const templateVars = {
     userID: req.session.user_id,
     urls: urlsForUser(req.session.user_id),
-    user: users[req.session.user_id]
+    user: users[req.session.user_id],
+  };
+  if (req.session.user_id) {
+    //do nothing?
+  } else {
+    res.redirect('/login');
   }
   res.render("urls_index", templateVars);
 });

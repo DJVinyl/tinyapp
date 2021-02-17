@@ -51,13 +51,13 @@ ____________________________
     - if user is not logged in:
         - (Minor) redirect to /login
 
-- [ ] GET /urls
-  - if user is logged in:
+- [x] GET /urls
+  - [x] if user is logged in:
     - returns HTML with:
       - the site header (see Display Requirements above)
       - a list (or table) of URLs the user has created, each list item containing:
         - a short URL
-          the short URL's matching long URL
+        - the short URL's matching long URL
         - an edit button which makes a GET request to /urls/:id
         - a delete button which makes a POST request to /urls/:id/delete
         - (Stretch) the date the short URL was created

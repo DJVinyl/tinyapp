@@ -82,11 +82,15 @@ app.post("/urls", (req, res) => {
 });
 
 app.get("/urls/new", (req, res) => {
+  if (!req.cookies['user_id']) {
+    res.redirect('/login');
+  } else {
   const templateVars = { 
-    userID: req.cookies['user_id'] };
-  // const templateVars = { 
-  //   username: req.cookies["username"] }
+    userID: req.cookies['user_id'],
+    user: users[req.cookies['user_id']]
+   };
   res.render("urls_new", templateVars);
+  }
 });
 
 app.get("/urls/:shortURL", (req, res) => {
@@ -110,7 +114,6 @@ app.post("/urls/:shortURL/delete", (req, res) => {
   delete urlDatabase[req.params.shortURL];
   res.redirect('/urls')
 });
-
 
 app.get("/urls.json", (req, res) => {
   res.json(urlDatabase);
@@ -148,6 +151,21 @@ app.post("/register", (req, res) => {
   users[randID] = { id: randID.toString(), email: req.body.username, password: req.body.password};
   res.cookie('user_id', randID);
   res.redirect('/urls');
+  }
+});
+
+app.post("/login", (req, res) => {
+  console.log("in POST Login")
+  const loginEmail = req.body.email;
+  const loginPW = req.body.password;
+  const ID = loginAuth(loginEmail,loginPW)
+  if(ID)
+  {
+    res.cookie('user_id', ID);
+    res.redirect('/urls');
+  }
+  else {
+    res.status(403).send({ error: "Username and password combo don't exist" });
   }
 });
 

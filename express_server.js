@@ -31,7 +31,7 @@ const generateRandomString = (length) => {
 };
 
 const checkEmailExists = (newEmail) => {
-  for(id in users){
+  for(let id in users){
     if (users[id].email === newEmail){
       return true;
     }
@@ -40,7 +40,7 @@ const checkEmailExists = (newEmail) => {
 };
 
 const loginAuth = (username, password) => {
-  for (id in users) {
+  for (let id in users) {
     if (users[id].email === username){
       if(users[id].password === password){
         return id;
@@ -50,6 +50,15 @@ const loginAuth = (username, password) => {
   return false;
 }
 
+const urlsForUser = (id) => {
+  const result = {};
+  for (let urlID in urlDatabase){
+    if (urlID.userID === id) {
+      result[urlID] = urlDatabase[urlID];
+    }
+  }
+  return result;
+}
 
 app.set("view engine", "ejs"); //setting the view engine.
 

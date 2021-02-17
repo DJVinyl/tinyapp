@@ -4,7 +4,7 @@ const PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
 var cookieSession = require('cookie-session')
 const bcrypt = require('bcrypt');
-const getUserByEmail = require('./helpers');
+const {getUserByEmail} = require('./helpers');
 
 
 //

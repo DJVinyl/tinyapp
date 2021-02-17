@@ -1,11 +1,11 @@
 const getUserByEmail = function(email, database) {
-  let user = null;
+  let user = undefined;
   for(let id in database){
     if (database[id].email === email){
-      user = database[id].email;
+      user = database[id].id;
     }
   }
   return user;
 };
 
-module.exports = getUserByEmail;
+module.exports = {getUserByEmail};

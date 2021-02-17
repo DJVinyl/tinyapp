@@ -2,7 +2,8 @@ const express = require("express");
 const app = express();
 const PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
-var cookieParser = require('cookie-parser')
+var cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser())
@@ -42,7 +43,7 @@ const checkEmailExists = (newEmail) => {
 const loginAuth = (username, password) => {
   for (let id in users) {
     if (users[id].email === username){
-      if(users[id].password === password){
+      if(bcrypt.compareSync(password, users[id].password)){
         return id;
       }
     }
@@ -159,7 +160,7 @@ app.post("/register", (req, res) => {
   } else if (checkEmailExists(req.body.username)){
     res.status(400).send({ error: "Username already exists" });
   } else {
-  users[randID] = { id: randID.toString(), email: req.body.username, password: req.body.password};
+  users[randID] = { id: randID.toString(), email: req.body.username, password: bcrypt.hashSync(req.body.password, 10)};
   res.cookie('user_id', randID);
   res.redirect('/urls');
   }

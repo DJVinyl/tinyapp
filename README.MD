@@ -45,7 +45,7 @@ ____________________________
   
 ## Behaviour Requirements
 
-- [ ] GET /
+- [x] GET /
     - if user is logged in:
         - (Minor) redirect to /urls
     - if user is not logged in:

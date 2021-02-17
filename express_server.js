@@ -84,12 +84,13 @@ const urlsForUser = (id) => {
 app.set("view engine", "ejs"); //setting the view engine.
 
 app.get("/", (req, res) => {
-  res.redirect('/urls');
+  console.log();
+  if(req.session.user){
+    res.redirect('/urls');
+  } else {
+    res.redirect('/login');
+  }
 });
-
-// app.get("/hello", (req, res) => {
-//   res.send("<html><body>Hello <b>World</b></body></html>\n");
-// });
 
 //
 ///// GET and POST functions

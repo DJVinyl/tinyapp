@@ -116,8 +116,7 @@ app.get("/u/:shortURL", (req, res) => {
 
 app.post("/urls/:shortURL", (req, res) => {
   //console.log('logging:', req.body);
-  console.log(req.body.editSubmit);
-  //console.log(urlDatabase[req.cookies["user_id"]]);
+  //console.log(req.body.editSubmit);
   urlDatabase[req.params.shortURL].longURL = req.body.editSubmit
   res.redirect(`/urls`);
 });

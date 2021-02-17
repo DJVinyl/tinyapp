@@ -2,9 +2,14 @@ const express = require("express");
 const app = express();
 const PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
-// var cookieParser = require('cookie-parser');
 var cookieSession = require('cookie-session')
 const bcrypt = require('bcrypt');
+const getUserByEmail = require('./helpers');
+
+
+//
+///// Middleware
+//
 
 app.use(bodyParser.urlencoded({extended: true}));
 // app.use(cookieParser())
@@ -14,6 +19,10 @@ app.use(cookieSession({
   keys: ['key1', 'key2'],
   maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }));
+
+//
+///// Const Variable used for testing purposes.
+//
 
 const urlDatabase = {
   "b2xVn2": { longURL: "http://www.lighthouselabs.ca", userID: '10000' },
@@ -27,6 +36,10 @@ const users = {
   }
 };
 
+//
+///// Helper Functions
+//
+
 //located code: https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
 const generateRandomString = (length) => {
   let result           = '';
@@ -38,9 +51,9 @@ const generateRandomString = (length) => {
   return result;
 };
 
-const checkEmailExists = (newEmail, database) => {
-  for(let id in database){
-    if (database[id].email === newEmail){
+const checkEmailExists = (newEmail) => {
+  for(let id in users){
+    if (users[id].email === newEmail){
       return true;
     }
   }
@@ -78,6 +91,10 @@ app.set("view engine", "ejs"); //setting the view engine.
 //   res.send("<html><body>Hello <b>World</b></body></html>\n");
 // });
 
+//
+///// GET and POST functions
+//
+
 app.get("/urls", (req, res) => {
   const templateVars = {
     userID: req.session.user_id,
@@ -86,7 +103,6 @@ app.get("/urls", (req, res) => {
   }
   res.render("urls_index", templateVars);
 });
-
 
 app.post("/urls", (req, res) => {
   //console.log(req.body);  // Log the POST request body to the console

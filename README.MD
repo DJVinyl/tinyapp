@@ -29,3 +29,30 @@ TinyApp is a full stack web application built with Node and Express that allows 
 - Add server-side storage of URLs
 - Clean up CSS on login and register pages
 
+## Display Requirements
+- [x] Site Header:
+  - if a user is logged in, the header shows:
+the user's email
+    - a logout button which makes a POST request to /logout
+  - if a user is not logged in, the header shows:
+    - a link to the login page (/login)
+    - a link to the registration page (/register)
+
+- [ ] GET /
+    - if user is logged in:
+        - (Minor) redirect to /urls
+    - if user is not logged in:
+        - (Minor) redirect to /login
+
+
+- [ ] 
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+- [ ]

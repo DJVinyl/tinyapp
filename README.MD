@@ -4,7 +4,10 @@ TinyApp is a full stack web application built with Node and Express that allows 
 
 ## Final Product
 
-!["Screenshot of URLs page"](https://raw.githubusercontent.com/DJVinyl/tinyapp/master/docs/Screen%20Shot%202021-02-17%20at%202.12.51%20PM.png)
+!["Screenshot of URLs page"](https://raw.githubusercontent.com/DJVinyl/tinyapp/master/docs/Main%20Page.png)
+!["Screenshot of Edit page"](https://raw.githubusercontent.com/DJVinyl/tinyapp/master/docs/Edit%20Page.png)
+!["Screenshot of Login page"](https://raw.githubusercontent.com/DJVinyl/tinyapp/master/docs/Login%20Page.png)
+!["Screenshot of Register page"](https://raw.githubusercontent.com/DJVinyl/tinyapp/master/docs/Register%20Page.png)
 
 ## Dependencies
 

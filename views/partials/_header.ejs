@@ -10,22 +10,28 @@
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
       </div>
     </div>
+    <style>
+      a.username {
+          font-weight: bold;
+          width: 200px;
+        }
+     </style>
     <% if (user !== undefined) { %>
-      <div class="display-Logout">
-      <a id="username">
+      <a class="username">
         <p>Logged in as: <%= user.email %></p>
-          <div class="Logout">
-            <form method="POST" action='/logout'><button id="logoutButton">Log Out</button></form>
-          </div>
       </a>
+      <div class="display-Logout">
+          <div class="Logout">
+            <form method="POST" action='/logout'><button id="logoutButton" class="btn btn-secondary" >Log Out</button></form>
+          </div>
       </div>
       <% }else { %>
         <div class="Login">
           <form class="login-link" action="/login" method="GET">
-            <button id="Login">Login</button>
+            <button id="Login" class="btn btn-primary">Login</button>
           </form>
           <form class="register-link" action="/register" method="GET">
-            <button id="Register">Register</button>
+            <button id="Register" class="btn btn-secondary">Register</button>
           </form>
         </div>
         <%}%>

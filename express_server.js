@@ -71,6 +71,7 @@ app.get("/urls", (req, res) => {
   res.render("urls_index", templateVars);
 });
 
+//Post to URL, adds the new URL from Create a URL
 app.post("/urls", (req, res) => {
   const shortURL = generateRandomString(7);
   urlDatabase[shortURL] = {
@@ -80,6 +81,7 @@ app.post("/urls", (req, res) => {
   res.redirect(`/urls/${shortURL}`);
 });
 
+//Page where longURL is inputed
 app.get("/urls/new", (req, res) => {
   if (!req.session.user_id) {
     res.redirect("/login");
@@ -92,6 +94,7 @@ app.get("/urls/new", (req, res) => {
   }
 });
 
+//Page of the short URL
 app.get("/urls/:shortURL", (req, res) => {
   const templateVars = {
     shortURL: req.params.shortURL,
@@ -115,7 +118,7 @@ app.get("/urls/:shortURL", (req, res) => {
   }
 });
 
-//edit function
+//edit form on edit page
 app.post("/urls/:shortURL", (req, res) => {
   let newURL = req.body.editSubmit;
   urlDatabase[req.params.shortURL].longURL = newURL;
@@ -132,20 +135,24 @@ app.get("/u/:shortURL", (req, res) => {
   res.redirect(longURL);
 });
 
+//Button where the shortURL is deleted.
 app.post("/urls/:shortURL/delete", (req, res) => {
   delete urlDatabase[req.params.shortURL];
   res.redirect("/urls");
 });
 
+//Renders a json of the URL Database.
 app.get("/urls.json", (req, res) => {
   res.json(urlDatabase);
 });
 
+//Logout
 app.post("/logout", (req, res) => {
   req.session = null;
   res.redirect("/urls");
 });
 
+//Register page
 app.get("/register", (req, res) => {
   if (!req.session.user_id) {
     const templateVars = {
@@ -158,6 +165,7 @@ app.get("/register", (req, res) => {
   }
 });
 
+//Login Page
 app.get("/login", (req, res) => {
   if (!req.session.user_id) {
     const templateVars = {
@@ -170,6 +178,7 @@ app.get("/login", (req, res) => {
   }
 });
 
+//Register page POST
 app.post("/register", (req, res) => {
   const randID = generateRandomString(10); // 10 character rand string
   if (!req.body.username || !req.body.password) {
@@ -187,6 +196,7 @@ app.post("/register", (req, res) => {
   }
 });
 
+//Login Page POST
 app.post("/login", (req, res) => {
   const loginEmail = req.body.email;
   const loginPW = req.body.password;
@@ -203,6 +213,7 @@ app.post("/login", (req, res) => {
   }
 });
 
+//Deafult 404 catcher
 app.get("*", (req, res) => {
   res
     .status(404)
@@ -210,5 +221,5 @@ app.get("*", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}!`);
+  console.log(`TinyApp listening on port ${PORT}!`);
 });

@@ -94,13 +94,13 @@ ____________________________
   - [x] if user is logged in but does not own the URL with the given ID:
     - returns HTML with a relevant error message
 
-- [ ] GET /u/:id
+- [x] GET /u/:id
   - if URL for the given ID exists:
     - redirects to the corresponding long URL
   - if URL for the given ID does not exist:
     - (Minor) returns HTML with a relevant error message
 
-- [ ] POST /urls
+- [x] POST /urls
   - if user is logged in:
     - generates a short URL, saves it, and associates it with the user
     - redirects to /urls/:id, where :id matches the ID of the newly saved URL

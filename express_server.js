@@ -105,7 +105,6 @@ const checkURL = (id) => {
 app.set("view engine", "ejs"); //setting the view engine.
 
 app.get("/", (req, res) => {
-  console.log();
   if(req.session.user){
     res.redirect('/urls');
   } else {
@@ -132,8 +131,8 @@ app.get("/urls", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
-  //console.log(req.body);  // Log the POST request body to the console
-  const shortURL = generateRandomString(7) //EVENTUALLY ADD FUNCTIONALITY THAT WILL CHECK IF The shortURL already exists,
+  const shortURL = generateRandomString(7) 
+  //ADD FUNCTIONALITY THAT WILL CHECK IF The shortURL already exists,
   urlDatabase[shortURL] = {longURL: req.body.longURL, userID: req.session.user_id}
   res.redirect(`/urls/${shortURL}`)
 });
@@ -148,10 +147,6 @@ app.get("/urls/new", (req, res) => {
    };
   res.render("urls_new", templateVars);
   }
-});
-
-app.post("/urls/:shortURL", (req, res) => {
-  urlDatabase[req.params.shortURL].longURL = req.body.editSubmit
 });
 
 app.get("/urls/:shortURL", (req, res) => {
@@ -170,12 +165,16 @@ app.get("/urls/:shortURL", (req, res) => {
   }
 });
 
+//Redirect the to long URL
 app.get("/u/:shortURL", (req, res) => {
-  const longURL = urlDatabase[req.params.shortURL];
+  const longURL = urlDatabase[req.params.shortURL].longURL;
   res.redirect(longURL);
 });
 
-
+app.post("/urls/:shortURL", (req, res) => {
+  urlDatabase[req.params.shortURL].longURL = req.body.editSubmit
+  res.redirect('/urls');
+});
 
 app.post("/urls/:shortURL/delete", (req, res) => {
   delete urlDatabase[req.params.shortURL];
@@ -235,10 +234,6 @@ app.post("/login", (req, res) => {
   else {
     res.status(403).send({ error: "Username and password combo don't exist" });
   }
-});
-
-app.get('*', function(req, res){
-  res.send('what???', 404);
 });
 
 app.listen(PORT, () => {

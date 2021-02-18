@@ -1,12 +1,13 @@
-const bcrypt = require('bcryptjs');
+const bcrypt = require("bcryptjs");
 
 //located code: https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
 //
 //// Generates a random string which takes an argument of length and returns a random string of that length
 //
 const generateRandomString = (length) => {
-  let result           = '';
-  const characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = "";
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   const charactersLength = characters.length;
   for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -44,7 +45,7 @@ const loginAuth = (username, password, userDB) => {
 //// Checks to see if a user is authorized to be in accessing a shortURL. ShortURL may exist but may not be registered to the user. THis function retrns a boolean if the user does pertain to the shortURL.
 //
 const userAuthorized = (user, shortURL, urlDatabase) => {
-  const accessibleURLS = urlsForUser(user,urlDatabase);
+  const accessibleURLS = urlsForUser(user, urlDatabase);
   for (let urlID in accessibleURLS) {
     if (shortURL === urlID) {
       return true;
@@ -79,7 +80,7 @@ const checkURL = (id, urlDatabase) => {
 //
 /// Function given by compass. Used for mocha and Chai testing
 //
-const getUserByEmail = function(email, database) {
+const getUserByEmail = function (email, database) {
   let user = undefined;
   for (let id in database) {
     if (database[id].email === email) {
@@ -89,7 +90,6 @@ const getUserByEmail = function(email, database) {
   return user;
 };
 
-
 module.exports = {
   getUserByEmail,
   generateRandomString,
@@ -97,5 +97,5 @@ module.exports = {
   loginAuth,
   userAuthorized,
   urlsForUser,
-  checkURL
+  checkURL,
 };

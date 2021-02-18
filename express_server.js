@@ -197,7 +197,6 @@ app.get("/urls.json", (req, res) => {
 
 app.post("/logout", (req, res) => {
   req.session = null
-  //res.clearCookie('user_id', req.body.userID);
   res.redirect('/urls');
 });
 

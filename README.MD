@@ -107,15 +107,15 @@ ____________________________
   - if user is not logged in:
     - (Minor) returns HTML with a relevant error message
 
-- [ ] POST /urls/:id
+- [x] POST /urls/:id
   - [x] if user is logged in and owns the URL for the given ID:
     - updates the URL
     - redirects to /urls
   - [x] if user is not logged in:
     - (Minor) returns HTML with a relevant error message
-  - if user is logged it but does not own the URL for the given ID:
+  - [x] if user is logged it but does not own the URL for the given ID:
     - (Minor) returns HTML with a relevant error message
-  - POST /urls/:id/delete
+  - [x] POST /urls/:id/delete
     - if user is logged in and owns the URL for the given ID:
       - deletes the URL
       - redirects to /urls
@@ -126,7 +126,7 @@ ____________________________
 
 - [ ] GET /login
   - if user is logged in:
-    - (Minor) redirects to /urls
+    - (Minor) redirects to /urls *****
   - if user is not logged in:
     - returns HTML with:
     - a form which contains:
@@ -135,21 +135,21 @@ ____________________________
 
 - [ ] GET /register
   - if user is logged in:
-    - (Minor) redirects to /urls
+    - (Minor) redirects to /urls  *****
   - if user is not logged in:
     - returns HTML with:
     - a form which contains:
       - input fields for email and password
       - a register button that makes a POST request to /register
 
-- [ ] POST /login
+- [x] POST /login
   - if email and password params match an existing user:
     - sets a cookie
     - redirects to /urls
   - if email and password params don't match an existing user:
     - returns HTML with a relevant error message
 
-- [ ] POST /register
+- [x] POST /register
   - if email or password are empty:
     - returns HTML with a relevant error message
   - if email already exists:
@@ -160,6 +160,6 @@ ____________________________
     - sets a cookie
     - redirects to /urls
 
-- [ ] POST /logout
+- [x] POST /logout
   - deletes cookie
   - redirects to /urls

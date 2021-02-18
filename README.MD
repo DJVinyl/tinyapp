@@ -108,10 +108,10 @@ ____________________________
     - (Minor) returns HTML with a relevant error message
 
 - [ ] POST /urls/:id
-  - if user is logged in and owns the URL for the given ID:
+  - [x] if user is logged in and owns the URL for the given ID:
     - updates the URL
     - redirects to /urls
-  - if user is not logged in:
+  - [x] if user is not logged in:
     - (Minor) returns HTML with a relevant error message
   - if user is logged it but does not own the URL for the given ID:
     - (Minor) returns HTML with a relevant error message

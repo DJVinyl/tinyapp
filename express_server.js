@@ -4,7 +4,7 @@ const PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
 var cookieSession = require('cookie-session')
 const bcrypt = require('bcrypt');
-const {getUserByEmail} = require('./helpers');
+//const {getUserByEmail} = require('./helpers');
 
 
 //
@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieSession({
   name: 'session',
   // Cookie Options
-  keys: ['key1', 'key2'],
+  keys: ['key1'],
   maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }));
 
@@ -28,6 +28,7 @@ const urlDatabase = {
   "b2xVn2": { longURL: "http://www.lighthouselabs.ca", userID: '10000' },
   "9sm5xK": { longURL: "http://www.google.com", userID: '10000'}
 };
+
 const users = {
   '10000': {
     id: "10000", 
@@ -101,11 +102,10 @@ const checkURL = (id) => {
   return false;
 }
 
-
 app.set("view engine", "ejs"); //setting the view engine.
 
 app.get("/", (req, res) => {
-  if(req.session.user){
+  if(req.session.user_id){
     res.redirect('/urls');
   } else {
     res.redirect('/login');
@@ -122,9 +122,7 @@ app.get("/urls", (req, res) => {
     urls: urlsForUser(req.session.user_id),
     user: users[req.session.user_id],
   };
-  if (req.session.user_id) {
-    //do nothing?
-  } else {
+  if (!req.session.user_id) {
     res.redirect('/login');
   }
   res.render("urls_index", templateVars);
@@ -150,31 +148,43 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.get("/urls/:shortURL", (req, res) => {
+
+  const templateVars = {
+    shortURL: req.params.shortURL,
+    longURL: urlDatabase[req.params.shortURL].longURL,
+    userID: req.session.user_id,
+    user: users[req.session.user_id]
+  };
+
   const test = checkURL(req.params.shortURL);
   const authorized = userAuthorized(req.session.user_id, req.params.shortURL)
+
   if(test && authorized) {
-    const templateVars = {
-      shortURL: req.params.shortURL,
-      longURL: urlDatabase[req.params.shortURL].longURL,
-      userID: req.session.user_id,
-      user: users[req.session.user_id],
-    };
+    console.log("rendering urls_show");
     res.render("urls_show", templateVars);
   } else {
     res.status(404).send({ error: "Resource not located or Unauthorized" });
   }
 });
 
+//edit function
+app.post("/urls/:shortURL", (req, res) => {
+  let newURL = req.body.editSubmit;
+  if (newURL.substring(0, 7) !== 'http://' || newURL.substring(0, 8) !== 'https://')
+  {
+    newURL = 'http://' + newURL;
+  }
+  urlDatabase[req.params.shortURL].longURL = newURL;
+  res.redirect(`/urls/${req.params.shortURL}`);
+});
+
 //Redirect the to long URL
 app.get("/u/:shortURL", (req, res) => {
-  const longURL = urlDatabase[req.params.shortURL].longURL;
+  const shortURL = req.params.shortURL;
+  const longURL = urlDatabase[shortURL].longURL;
   res.redirect(longURL);
 });
 
-app.post("/urls/:shortURL", (req, res) => {
-  urlDatabase[req.params.shortURL].longURL = req.body.editSubmit
-  res.redirect('/urls');
-});
 
 app.post("/urls/:shortURL/delete", (req, res) => {
   delete urlDatabase[req.params.shortURL];

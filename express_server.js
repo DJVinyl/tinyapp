@@ -75,7 +75,7 @@ const userAuthorized = (user, shortURL) => {
   const accessibleURLS = urlsForUser(user);
   for (let urlID in accessibleURLS)
   {
-    if (shortURL === accessibleURLS[urlID]){
+    if (shortURL === urlID){
       return true;
     }
   }
@@ -135,7 +135,6 @@ app.post("/urls", (req, res) => {
   //console.log(req.body);  // Log the POST request body to the console
   const shortURL = generateRandomString(7) //EVENTUALLY ADD FUNCTIONALITY THAT WILL CHECK IF The shortURL already exists,
   urlDatabase[shortURL] = {longURL: req.body.longURL, userID: req.session.user_id}
-  //console.log(urlDatabase);
   res.redirect(`/urls/${shortURL}`)
 });
 
@@ -149,6 +148,10 @@ app.get("/urls/new", (req, res) => {
    };
   res.render("urls_new", templateVars);
   }
+});
+
+app.post("/urls/:shortURL", (req, res) => {
+  urlDatabase[req.params.shortURL].longURL = req.body.editSubmit
 });
 
 app.get("/urls/:shortURL", (req, res) => {
@@ -172,12 +175,7 @@ app.get("/u/:shortURL", (req, res) => {
   res.redirect(longURL);
 });
 
-app.post("/urls/:shortURL", (req, res) => {
-  //console.log('logging:', req.body);
-  //console.log(req.body.editSubmit);
-  urlDatabase[req.params.shortURL].longURL = req.body.editSubmit
-  res.redirect(`/urls`);
-});
+
 
 app.post("/urls/:shortURL/delete", (req, res) => {
   delete urlDatabase[req.params.shortURL];
@@ -220,13 +218,11 @@ app.post("/register", (req, res) => {
   } else {
   users[randID] = { id: randID.toString(), email: req.body.username, password: bcrypt.hashSync(req.body.password, 10)};
   req.session.user_id = randID;
-  //res.cookie('user_id', randID);
   res.redirect('/urls');
   }
 });
 
 app.post("/login", (req, res) => {
-  console.log("in POST Login")
   const loginEmail = req.body.email;
   const loginPW = req.body.password;
   const ID = loginAuth(loginEmail,loginPW)

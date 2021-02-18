@@ -76,7 +76,7 @@ ____________________________
   - [x] if user is not logged in:
       - redirects to the /login page
 
-- [] GET /urls/:id
+- [x] GET /urls/:id
   - [x] if user is logged in and owns the URL for the given ID:
     - returns HTML with:
     - the site header (see Display Requirements above)
@@ -87,11 +87,11 @@ ____________________________
     - (Stretch) the date the short URL was created
     - (Stretch) the number of times the short URL was visited
     - (Stretch) the number of unique visits for the short URL
-  - [ ] if a URL for the given ID does not exist:
+  - [x] if a URL for the given ID does not exist:
     - (Minor) returns HTML with a relevant error message
-  - [ ] if user is not logged in:
+  - [x] if user is not logged in:
     - returns HTML with a relevant error message
-  - [ ] if user is logged in but does not own the URL with the given ID:
+  - [x] if user is logged in but does not own the URL with the given ID:
     - returns HTML with a relevant error message
 
 - [ ] GET /u/:id

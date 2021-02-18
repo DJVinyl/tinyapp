@@ -33,7 +33,7 @@ ____________________________
 
 # Requirements of the project
 
-## Display Requirements
+### Display Requirements
 - [x] Site Header:
   - if a user is logged in, the header shows:
     the user's email
@@ -43,7 +43,7 @@ ____________________________
     - a link to the registration page (/register)
 
   
-## Behaviour Requirements
+### Behaviour Requirements
 
 - [x] GET /
     - if user is logged in:
@@ -124,19 +124,19 @@ ____________________________
     - if user is logged it but does not own the URL for the given ID:
       - (Minor) returns HTML with a relevant error message
 
-- [ ] GET /login
-  - if user is logged in:
+- [x] GET /login
+  - [x] if user is logged in:
     - (Minor) redirects to /urls *****
-  - if user is not logged in:
+  - [x] if user is not logged in:
     - returns HTML with:
     - a form which contains:
       - input fields for email and password
       - submit button that makes a POST request to /login
 
-- [ ] GET /register
-  - if user is logged in:
+- [x] GET /register
+  - [x] if user is logged in:
     - (Minor) redirects to /urls  *****
-  - if user is not logged in:
+  - [x] if user is not logged in:
     - returns HTML with:
     - a form which contains:
       - input fields for email and password

@@ -10,9 +10,7 @@ const bcrypt = require('bcrypt');
 //
 ///// Middleware
 //
-
 app.use(bodyParser.urlencoded({extended: true}));
-// app.use(cookieParser())
 app.use(cookieSession({
   name: 'session',
   // Cookie Options
@@ -91,7 +89,7 @@ const urlsForUser = (id) => {
     }
   }
   return result;
-}
+};
 
 const checkURL = (id) => {
   for (let urlID in urlDatabase){
@@ -100,7 +98,7 @@ const checkURL = (id) => {
     }
   }
   return false;
-}
+};
 
 app.set("view engine", "ejs"); //setting the view engine.
 
@@ -160,7 +158,6 @@ app.get("/urls/:shortURL", (req, res) => {
   const authorized = userAuthorized(req.session.user_id, req.params.shortURL)
 
   if(test && authorized) {
-    console.log("rendering urls_show");
     res.render("urls_show", templateVars);
   } else {
     res.status(404).send({ error: "Resource not located or Unauthorized" });
@@ -170,10 +167,6 @@ app.get("/urls/:shortURL", (req, res) => {
 //edit function
 app.post("/urls/:shortURL", (req, res) => {
   let newURL = req.body.editSubmit;
-  if (newURL.substring(0, 7) !== 'http://' || newURL.substring(0, 8) !== 'https://')
-  {
-    newURL = 'http://' + newURL;
-  }
   urlDatabase[req.params.shortURL].longURL = newURL;
   res.redirect(`/urls/${req.params.shortURL}`);
 });
@@ -181,7 +174,11 @@ app.post("/urls/:shortURL", (req, res) => {
 //Redirect the to long URL
 app.get("/u/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
-  const longURL = urlDatabase[shortURL].longURL;
+  let longURL = urlDatabase[shortURL].longURL;
+  if (!longURL.includes('http'))
+  {
+    longURL = 'http://' + longURL;
+  }
   res.redirect(longURL);
 });
 
@@ -201,19 +198,27 @@ app.post("/logout", (req, res) => {
 });
 
 app.get("/register", (req, res) => {
-  const templateVars = { 
-    userID: req.session.user_id,
-    user: users[req.session.user_id]
-  };
-  res.render("register", templateVars);
+  if (!req.session.user_id) {
+    const templateVars = {
+      userID: req.session.user_id,
+      user: users[req.session.user_id],
+    };
+    res.render("register", templateVars);
+  } else {
+    res.redirect("/urls");
+  }
 });
 
 app.get("/login", (req, res) => {
-  const templateVars = { 
-    userID: req.session.user_id,
-    user: users[req.session.user_id]
-   };
-  res.render("login", templateVars);
+  if (!req.session.user_id) {
+    const templateVars = {
+      userID: req.session.user_id,
+      user: users[req.session.user_id],
+    };
+    res.render("login", templateVars);
+  } else {
+    res.redirect("/urls");
+  }
 });
 
 app.post("/register", (req, res) => {
@@ -241,8 +246,12 @@ app.post("/login", (req, res) => {
     res.redirect('/urls');
   }
   else {
-    res.status(403).send({ error: "Username and password combo don't exist" });
+    res.status(403).send({ error: "Login Failed. Username and password combo don't exist. Or incorrect password." });
   }
+});
+
+app.get('*', (req,res) => {
+  res.status(404).send({ error: "HEY, THIS PART OF THE WEBSITE DOESN'T EXIST YET!" });
 });
 
 app.listen(PORT, () => {
